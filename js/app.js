@@ -53,6 +53,7 @@ var Player = function(lives){
     this.y = 370;
     this.lives = lives;
     this.gameover = false;
+    this.victory = false;
 };
 
 Player.prototype.update = function(){
@@ -68,6 +69,14 @@ Player.prototype.render = function() {
       ctx.fillStyle = 'red';
       ctx.fillText('GAME OVER', 150, 260);
     }
+
+    if (player.victory) {
+      ctx.font = '22pt Helvetica';
+      ctx.strokeStyle = 'white';
+      ctx.strokeText('YOU WIN!', 180, 260);
+      ctx.fillStyle = 'red';
+      ctx.fillText('YOU WIN!', 180, 260);
+    }
 };
 
 Player.prototype.reset = function(){
@@ -81,7 +90,7 @@ Player.prototype.reset = function(){
 };
 
 Player.prototype.handleInput = function(direction){
-  if (this.gameover === true){
+  if (this.gameover === true || this.victory === true){
     return
   }
 
@@ -107,8 +116,9 @@ Player.prototype.handleInput = function(direction){
       }
       break;
   }
+
   if(this.y < 0){
-    player.reset()
+    player.victory = true;
   }
 };
 
