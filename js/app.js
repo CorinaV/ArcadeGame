@@ -1,3 +1,4 @@
+"use strict";
 // Enemies our player must avoid
 var Enemy = function(x, y, speed) {
     // Variables applied to each of our instances go here,
@@ -62,7 +63,7 @@ Player.prototype.update = function(){
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 
-    if (player.gameover) {
+    if (this.gameover) {
       ctx.font = '22pt Helvetica';
       ctx.strokeStyle = 'white';
       ctx.strokeText('GAME OVER', 150, 260);
@@ -70,7 +71,7 @@ Player.prototype.render = function() {
       ctx.fillText('GAME OVER', 150, 260);
     }
 
-    if (player.victory) {
+    if (this.victory) {
       ctx.font = '22pt Helvetica';
       ctx.strokeStyle = 'white';
       ctx.strokeText('YOU WIN!', 180, 260);
@@ -82,16 +83,16 @@ Player.prototype.render = function() {
 Player.prototype.reset = function(){
   this.x = 200;
   this.y = 370;
-  player.lives -= 1;
+  this.lives -= 1;
 
-  if (player.lives == 0) {
+  if (this.lives == 0) {
     this.gameover = true;
   }
 };
 
 Player.prototype.handleInput = function(direction){
   if (this.gameover === true || this.victory === true){
-    return
+    return;
   }
 
   switch(direction) {
@@ -115,10 +116,10 @@ Player.prototype.handleInput = function(direction){
         this.y += 80;
       }
       break;
-  }
+  };
 
   if(this.y < 0){
-    player.victory = true;
+    this.victory = true;
   }
 };
 
@@ -147,8 +148,8 @@ var allEnemies = [
 ];
 var player = new Player(3);
 
-var enemy_size = {width: 80, height: 60}
-var player_size = {width: 80, height: 80}
+var enemy_size = {width: 80, height: 60};
+var player_size = {width: 80, height: 80};
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -159,6 +160,5 @@ document.addEventListener('keyup', function(e) {
         39: 'right',
         40: 'down'
     };
-    // console.log(e.keyCode);
     player.handleInput(allowedKeys[e.keyCode]);
 });
